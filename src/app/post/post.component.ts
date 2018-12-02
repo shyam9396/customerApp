@@ -34,10 +34,7 @@ export class PostComponent implements OnInit {
         //this.form.setErrors(error.originalError); // Form not implimented thats the reason commented
         alert("Bad Request Error")
       }
-      else{
-        alert("Unexpected Error");
-        console.log(error);
-      }
+      else throw error
     })
   }
   updateData(post){
@@ -45,11 +42,7 @@ export class PostComponent implements OnInit {
     .subscribe(
       response => {
       console.log(response.json());
-    }, 
-    error => {
-      alert("Unexpected Error");
-      console.log(error);
-    })
+    });
   }
   deleteData(post){
     this.postService.deleteService(post.id)
@@ -57,16 +50,13 @@ export class PostComponent implements OnInit {
       response => {
       let index = this.posts.indexOf(post);
       this.posts.splice(index, 1);
-      alert("Dlete Item")
+      alert("Dleted Item")
     },
     (error: AppError) => {
       if(error instanceof NotFoundError){
         alert("This post already deleted");
       }
-      else{
-        alert("Unexpected Error");
-        console.log(error);
-      }
+      else throw error
     })
   }
   ngOnInit() {
@@ -74,10 +64,6 @@ export class PostComponent implements OnInit {
     .subscribe(
       response => {
       this.posts = response.json();
-    }, 
-    error => {
-      alert("Unexpected Error");
-      console.log(error);
     });
   }
    
