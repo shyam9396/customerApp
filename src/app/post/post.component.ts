@@ -21,15 +21,19 @@ export class PostComponent implements OnInit {
 
   createPost(input:HTMLInputElement){
     let post:any = {title:input.value};
+    this.posts.splice(0,0, post);
+
     input.value = '';
     this.postService.create(post)
     .subscribe(
       newPosts => {
       console.log(newPosts);
       post['id'] = newPosts.id;
-      this.posts.splice(0,0, post);
+      // this.posts.splice(0,0, post);
     }, 
     (error:AppError )=> {
+      this.posts.splice(0, 1);
+      
       if (error instanceof BadInput){
         //this.form.setErrors(error.originalError); // Form not implimented thats the reason commented
         alert("Bad Request Error")
@@ -45,14 +49,20 @@ export class PostComponent implements OnInit {
     });
   }
   deleteData(post){
+    let index = this.posts.indexOf(post);
+      this.posts.splice(index, 1);
+      // alert("Dleted Item");
+
     this.postService.delete(post.id)
     .subscribe(
       () => {
-      let index = this.posts.indexOf(post);
-      this.posts.splice(index, 1);
-      alert("Dleted Item")
+      // let index = this.posts.indexOf(post);
+      // this.posts.splice(index, 1);
+      // alert("Dleted Item")
     },
     (error: AppError) => {
+      this.posts.splice(0, 0, post);
+
       if(error instanceof NotFoundError){
         alert("This post already deleted");
       }
