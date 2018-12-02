@@ -15,8 +15,8 @@ export class PostComponent implements OnInit {
   posts: any[];
   // private url = 'http://jsonplaceholder.typicode.com/posts';
 
-  constructor(private postService:PostService) { 
-    
+  constructor(private postService:PostService) {
+
   }
 
   createPost(input:HTMLInputElement){
@@ -30,10 +30,10 @@ export class PostComponent implements OnInit {
       console.log(newPosts);
       post['id'] = newPosts.id;
       // this.posts.splice(0,0, post);
-    }, 
+    },
     (error:AppError )=> {
       this.posts.splice(0, 1);
-      
+
       if (error instanceof BadInput){
         //this.form.setErrors(error.originalError); // Form not implimented thats the reason commented
         alert("Bad Request Error")
@@ -55,13 +55,14 @@ export class PostComponent implements OnInit {
 
     this.postService.delete(post.id)
     .subscribe(
-      () => {
-      // let index = this.posts.indexOf(post);
-      // this.posts.splice(index, 1);
-      // alert("Dleted Item")
-    },
+    //   () => {
+    //   // let index = this.posts.indexOf(post);
+    //   // this.posts.splice(index, 1);
+    //   // alert("Dleted Item")
+    // },
+    null,
     (error: AppError) => {
-      this.posts.splice(0, 0, post);
+      this.posts.splice(index, 0, post);
 
       if(error instanceof NotFoundError){
         alert("This post already deleted");
@@ -73,5 +74,5 @@ export class PostComponent implements OnInit {
     this.postService.getAll()
     .subscribe(posts => this.posts = posts);
   }
-   
+
 }
